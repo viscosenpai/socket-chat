@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const sequelize = new Sequelize(
-  'postgres://postgres:postgres@localhost/socket_chat',
+  process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost/socket_chat',
   { logging: false }
 );
 const db = {};
