@@ -1,0 +1,8 @@
+{
+  "name": "socket_chat",
+  "description": "簡易チャット",
+  "repository": "https://github.com/viscosenpai/socket-chat.git",
+  "logo": "",
+  "keywords": ["node"],
+  "image": "heroku/nodejs"
+}
