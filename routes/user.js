@@ -8,7 +8,6 @@ router.post('/', (req, res) => {
     username: req.body.username,
     password: req.body.password
   }).then(result => {
-    console.log(result);
     res.status(201);
     res.redirect('chat');
   }).catch(err => {

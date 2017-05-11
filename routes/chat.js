@@ -9,12 +9,23 @@ router.get('/', (req, res, next) => {
       console.log(result);
       res.render('chat', { posts: result });
     } else {
-      res.render('chat');
+      res.render('chat', createInitialPost(models));
     }
   }).catch(err => {
     res.status(409);
     res.json(err);
   });
 });
+
+function createInitialPost (models) {
+  models.chat.create({
+    post: 'Socket.IO Chatへようこそ'
+  }).then(result => {
+    return result;
+  }).catch(err => {
+    res.status(409);
+    res.send(err);
+  });
+}
 
 module.exports = router;
