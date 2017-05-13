@@ -6,13 +6,14 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-const models = require('./models');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const helmet = require('helmet');
 const io = require('socket.io')(http);
 const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const PORT = process.env.PORT || 3000;
+const models = require('./models');
 
 // passport がユーザ情報をシリアライズすると呼び出される
 passport.serializeUser((id, done) => {
@@ -47,6 +48,7 @@ passport.use(
         }
       }).then(result => {
         if (result) {
+          req.session.userName = result.username;
           return done(null, result.username);
         } else {
           return done(null, false, req.flash('message', 'Invalid username or password.'));
@@ -88,10 +90,15 @@ app.use(cookieParser());
 app.use(flash());
 
 // passport設定
+console.log(Object.keys(models));
 app.use(session({
   secret: 'secret',
-  resave: false,
-  saveUninitialized: false,
+  store: new SequelizeStore({
+    db: models.sequelize,
+    table: 'session'
+  }),
+  resave: true,
+  saveUninitialized: true,
   cookie: {
     httpOnly: true,
     secure: false,

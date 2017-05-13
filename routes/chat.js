@@ -4,18 +4,29 @@ const models = require('../models');
 
 // Get home page
 router.get('/', (req, res, next) => {
-  models.chat.findAll().then(result => {
-    if (result && result.length > 0) {
-      console.log(result);
-      res.render('chat', { posts: result });
-    } else {
-      res.render('chat', createInitialPost(models));
-    }
-  }).catch(err => {
-    res.status(409);
-    res.json(err);
-  });
+  if (isSessionExist(req)) {
+    models.chat.findAll().then(result => {
+      if (result && result.length > 0) {
+        res.render('chat', { posts: result });
+      } else {
+        res.render('chat', createInitialPost(models));
+      }
+    }).catch(err => {
+      res.status(409);
+      res.json(err);
+    });
+  } else {
+    res.render('login');
+  }
 });
+
+function isSessionExist (req) {
+  let result = false;
+  if (req.session.userName) {
+    result = true;
+  }
+  return result;
+}
 
 function createInitialPost (models) {
   models.chat.create({
