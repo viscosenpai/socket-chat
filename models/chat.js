@@ -1,6 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const chat = sequelize.define('chat', {
-    post: DataTypes.TEXT
+    post: DataTypes.TEXT,
+    username: DataTypes.STRING
   }, {
     freezeTableName: true
   });

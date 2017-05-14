@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const http = require('http').Server(app);
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -9,10 +8,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const helmet = require('helmet');
-const io = require('socket.io')(http);
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const PORT = process.env.PORT || 3000;
 const models = require('./models');
 
 // passport がユーザ情報をシリアライズすると呼び出される
@@ -90,8 +87,7 @@ app.use(cookieParser());
 app.use(flash());
 
 // passport設定
-console.log(Object.keys(models));
-app.use(session({
+const sessionMiddleware = session({
   secret: 'secret',
   store: new SequelizeStore({
     db: models.sequelize,
@@ -104,7 +100,9 @@ app.use(session({
     secure: false,
     maxAge: 1000 * 60 * 30
   }
-}));
+});
+app.use(sessionMiddleware);
+app.session = sessionMiddleware;
 app.use(passport.initialize());
 app.use(passport.session());
 

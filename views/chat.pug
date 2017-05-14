@@ -17,9 +17,8 @@ html(lang='ja')
       #messages li:nth-child(odd) {background: #eee; }
   body
     ul#messages
-      - for (var i = 0; i < posts.length; i++) {
-        li #{posts[i].post}
-      - }
+      each post in posts
+        li #{post.post} : #{post.username}
       //- li #{posts}
     form(action='')
       input#m(autocomplete='off')
@@ -33,6 +32,6 @@ html(lang='ja')
       $('#m').val('');
       return false;
       });
-      socket.on('chat message', (msg) => {
-      $('#messages').append($('<li>').text(msg));
+      socket.on('chat message', (msg, username) => {
+      $('#messages').append($('<li>').text(msg).append($('<span>').text(' : ' + username)));
       });
