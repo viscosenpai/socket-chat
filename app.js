@@ -11,6 +11,7 @@ const helmet = require('helmet');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const models = require('./models');
+const password = require('./password');
 
 // passport がユーザ情報をシリアライズすると呼び出される
 passport.serializeUser((id, done) => {
@@ -37,14 +38,14 @@ passport.use(
     usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true
-  }, (req, username, password, done) => {
+  }, (req, username, pass, done) => {
     process.nextTick(() => {
       models.users.findOne({
         where: {
           username: username
         }
       }).then(result => {
-        if (result) {
+        if (result && password.check(pass, result.password)) {
           req.session.userName = result.username;
           return done(null, result.username);
         } else {
