@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const session = sequelize.define('session', {
+  const session = sequelize.define('sessions', {
     sid: DataTypes.STRING,
     expires: DataTypes.DATE,
     data: DataTypes.STRING
