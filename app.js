@@ -92,7 +92,7 @@ const sessionMiddleware = session({
   secret: 'secret',
   store: new SequelizeStore({
     db: models.sequelize,
-    table: 'session'
+    table: 'sessions'
   }),
   resave: true,
   saveUninitialized: true,
