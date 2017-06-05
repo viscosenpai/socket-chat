@@ -1,16 +1,15 @@
-doctype html
-html(lang='ja')
-  head
-    meta(charset='UTF-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    meta(http-equiv='X-UA-Compatible', content='ie=edge')
-    title Socket.IO chat
-  body
-    form(action='./login' method='post')
-      .container
-        h3 Login
-        label(for='username') ID
-        input(type='text' name='username' placeholder='username' maxlength='25')
-        label(for='password') Password
-        input(type='password' name='password' maxlength='25')
-        input(type='submit' value='Login')
+extends layout
+
+block content
+  .wrapper
+    .jumbotron.jumbotron-fluid
+      form(action='./login' method='post')
+        .container
+          h1 Login
+          .form-group
+            label(for='username') ID
+            input(type='text' name='username' placeholder='username' maxlength='25').form-control
+          .form-group
+            label(for='password') Password
+            input(type='password' name='password' maxlength='25').form-control
+          input(type='submit' value='Login').btn.btn-outline-primary

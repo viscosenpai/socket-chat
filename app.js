@@ -14,8 +14,9 @@ const models = require('./models');
 const password = require('./password');
 
 // passport がユーザ情報をシリアライズすると呼び出される
-passport.serializeUser((id, done) => {
-  done(null, id);
+passport.serializeUser((user, done) => {
+  console.log(user.username)
+  done(null, user.username);
 });
 
 // passport がユーザ情報をデシリアライズすると呼び出される
@@ -46,8 +47,7 @@ passport.use(
         }
       }).then(result => {
         if (result && password.check(pass, result.password)) {
-          req.session.userName = result.username;
-          return done(null, result.username);
+          return done(null, result);
         } else {
           return done(null, false, req.flash('message', 'Invalid username or password.'));
         }
@@ -86,6 +86,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(flash());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // passport設定
 const sessionMiddleware = session({

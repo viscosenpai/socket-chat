@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const models = require('../models');
+const passport = require('passport');
 
 // Get home page
 router.get('/', (req, res, next) => {
@@ -24,7 +25,8 @@ router.get('/', (req, res, next) => {
 
 function isSessionExist (req) {
   let result = false;
-  if (req.session.userName) {
+  console.log(req.user.username);
+  if (req.user.username) {
     result = true;
   }
   return result;
