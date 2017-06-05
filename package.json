@@ -2,7 +2,8 @@
   "name": "socket_chat",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www"
   },
   "license": "MIT",
   "dependencies": {
